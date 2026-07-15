@@ -34,7 +34,7 @@ const WebBotAuth = @import("WebBotAuth.zig");
 const CurlDebugAllocator = @import("CurlDebugAllocator.zig");
 
 const Cache = @import("cache/Cache.zig");
-const FsCache = @import("cache/FsCache.zig");
+const SqliteCache = @import("cache/SqliteCache.zig");
 
 const log = lp.log;
 const net = std.net;
@@ -224,21 +224,22 @@ pub fn init(allocator: Allocator, app: *App, config: *const Config) !Network {
     else
         null;
 
-    const cache = if (config.httpCacheDir()) |cache_dir_path|
-        Cache{
+    const cache = if (try config.httpCacheSqlitePath(allocator)) |cache_dir_path| blk: {
+        defer allocator.free(cache_dir_path);
+
+        break :blk Cache{
             .kind = .{
-                .fs = FsCache.init(cache_dir_path) catch |e| {
+                .sqlite = SqliteCache.init(allocator, cache_dir_path) catch |e| {
                     log.err(.cache, "failed to init", .{
-                        .kind = "FsCache",
+                        .kind = "SqliteCache",
                         .path = cache_dir_path,
                         .err = e,
                     });
                     return e;
                 },
             },
-        }
-    else
-        null;
+        };
+    } else null;
 
     return .{
         .allocator = allocator,
