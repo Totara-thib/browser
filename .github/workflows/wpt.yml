@@ -15,6 +15,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   wpt-build-release:
     name: zig build -Dwpt_extensions release
@@ -135,6 +138,11 @@ jobs:
 
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
+    # Pulls ghcr.io/lightpanda-io/perf-fmt with the GITHUB_TOKEN.
+    permissions:
+      contents: read
+      packages: read
 
     container:
       image: ghcr.io/lightpanda-io/perf-fmt:latest

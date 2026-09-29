@@ -33,6 +33,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   zig-fmt:
     name: zig fmt
@@ -113,6 +116,11 @@ jobs:
     timeout-minutes: 15
 
     if: github.event_name != 'pull_request'
+
+    # Pulls ghcr.io/lightpanda-io/perf-fmt with the GITHUB_TOKEN.
+    permissions:
+      contents: read
+      packages: read
 
     container:
       image: ghcr.io/lightpanda-io/perf-fmt:latest
