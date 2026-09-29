@@ -20,8 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
-      - uses: getplumber/plumber@7970e5df1e7d217de41b2880832b63a6f2152b97 # v0.4.8
+      - uses: getplumber/plumber@c61b610b19c5aecee689acea9e7c431f237624e9 # v0.5.14
         with:
+          # Main scores 44 today with every control on, the gate sits just
+          # under it. Raise it as the remaining findings get fixed.
+          min-points: 40
           # Code scanning upload needs security-events write, which PRs
           # from forks do not get. The report stays available as a
           # workflow artifact there.
