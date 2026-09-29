@@ -26,7 +26,7 @@ jobs:
       OS: linux
 
     runs-on: ubuntu-22.04
-    container: debian:stable-slim
+    container: debian:stable-slim@sha256:5bc3287b25407c965a30f38e32603dc253a3869e1b12a21ac09bfc27fd8b13ce
     timeout-minutes: 10
 
     steps:
